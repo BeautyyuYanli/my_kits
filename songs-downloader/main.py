@@ -2,6 +2,7 @@ import feedparser
 import downloader
 import ffmpeg
 import time
+import re
 # feed = feedparser.parse('http://127.0.0.1:1200/bilibili/fav/10725385/53706285')
 feed = feedparser.parse('file:///home/beautyyu/Downloads/1.xml')
 with open('database.pwp', 'r') as f:
