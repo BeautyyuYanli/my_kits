@@ -15,7 +15,7 @@ for i in feed.entries:
             ftitle = downloader.main(i.link + '?p=1')
             {ffmpeg
                 .input('bilibili_video/' + ftitle + '/' + ftitle + '.flv')
-                .output('output/' + i.title.replace('/', '') + '.mp3', ab = '1080k')
+                .output('output/' + re.sub(r'[\/\\:*?"<>|]', '', i.title) + '.mp3', ab = '1080k')
                 .run()
             }
             donelist.append(i.link)

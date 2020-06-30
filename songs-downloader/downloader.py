@@ -18,12 +18,9 @@ from moviepy.editor import *
 import os, sys, threading
 import signal
 import imageio
+import random
 imageio.plugins.ffmpeg.download()
 
-# 设置代理
-proxies = {
-    'http': 'http://121.233.87.68:4216'
-}
 # 线程信号量, 限制并发数
 S = threading.Semaphore(5)
 
@@ -64,7 +61,7 @@ def get_play_list(start_url, cid, quality):
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
     }
     # print(url_api)
-    html = requests.get(url_api, headers=headers, proxies=proxies).json()
+    html = requests.get(url_api, headers=headers).json()
     # print(json.dumps(html))
     video_list = []
     for i in html['durl']:
@@ -124,7 +121,7 @@ def format_size(bytes):
 def down_video(video_list, title, start_url, page):
     S.acquire()
     num = 1
-    currentVideoPath = os.path.join(sys.path[0], 'bilibili_video', title)  # 当前目录作为下载目录
+    currentVideoPath = os.path.join(sys.path[0], 'bilibili_video', title) # 当前目录作为下载目录
     if not os.path.exists(currentVideoPath):
         os.makedirs(currentVideoPath)
     for i in video_list:
@@ -163,6 +160,7 @@ def combine_video(title_list):
         current_video_path = os.path.join(video_path ,title)
         if len(os.listdir(current_video_path)) >= 2:
             # 视频大于一段才要合并
+            print('[下载完成,正在合并视频...]:' + title)
             # 定义一个数组
             L = []
             # 遍历所有文件
@@ -179,9 +177,11 @@ def combine_video(title_list):
             final_clip = concatenate_videoclips(L)
             # 生成目标视频文件
             final_clip.to_videofile(os.path.join(current_video_path, r'{}.mp4'.format(title)), fps=24, remove_temp=False)
+            print('[视频合并完成]' + title)
         else:
             pass
             # 视频只有一段则直接打印下载完成
+            print('[视频合并完成]:' + title)
 def main(start, quality='80'):
     start_time = time.time()
     if start.isdigit() == True:  # 如果输入的是av号
@@ -195,7 +195,7 @@ def main(start, quality='80'):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
     }
-    html = requests.get(start_url, headers=headers, proxies=proxies).json()
+    html = requests.get(start_url, headers=headers).json()
     data = html['data']
     cid_list = []
     if '?p=' in start:
@@ -212,7 +212,7 @@ def main(start, quality='80'):
     Hide()
     for i, item in enumerate(cid_list):
         cid = str(item['cid'])
-        title = item['part']
+        title = item['part'] + str(random.randint(1,99999999))
         title = re.sub(r'[\/\\:*?"<>|]', '', title)  # 替换为空的
         # s是进度条
         s = ('#' * round(i/len(cid_list)*50)).ljust(50, '-')
@@ -235,6 +235,7 @@ def main(start, quality='80'):
         th.join()
     Show()
     # 最后合并视频
+    print(title_list)
     combine_video(title_list)
     print('done ' + start)
     end_time = time.time()  # 结束时间
