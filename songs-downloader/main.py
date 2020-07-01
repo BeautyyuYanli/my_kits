@@ -20,11 +20,11 @@ with open('database.pwp', 'r') as f:
 donelist.pop()
 print(donelist)
 for i in feed.entries:
+    i.link = bv2av(i.link.split('/')[-1])
     if i.link not in donelist:
         print(i.link)
-        print(bv2av(i.link.split('/')[-1]))
         try:
-            ftitle = downloader.main(bv2av(i.link.split('/')[-1]) + '?p=1')
+            ftitle = downloader.main(i.link + '?p=1')
             {ffmpeg
                 .input('bilibili_video/' + ftitle + '/' + ftitle + '.flv')
                 .output('output/' + re.sub(r'[\/\\:*?"<>|]', '', i.title) + '.mp3', ab = '1080k')
