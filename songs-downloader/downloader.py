@@ -160,7 +160,7 @@ def combine_video(title_list):
         current_video_path = os.path.join(video_path ,title)
         if len(os.listdir(current_video_path)) >= 2:
             # 视频大于一段才要合并
-            print('[下载完成,正在合并视频...]:' + title)
+            # print('[下载完成,正在合并视频...]:' + title)
             # 定义一个数组
             L = []
             # 遍历所有文件
@@ -177,11 +177,11 @@ def combine_video(title_list):
             final_clip = concatenate_videoclips(L)
             # 生成目标视频文件
             final_clip.to_videofile(os.path.join(current_video_path, r'{}.mp4'.format(title)), fps=24, remove_temp=False)
-            print('[视频合并完成]' + title)
+            # print('[视频合并完成]' + title)
         else:
             pass
             # 视频只有一段则直接打印下载完成
-            print('[视频合并完成]:' + title)
+            # print('[视频合并完成]:' + title)
 def main(start, quality='80'):
     start_time = time.time()
     if start.isdigit() == True:  # 如果输入的是av号
@@ -235,7 +235,6 @@ def main(start, quality='80'):
         th.join()
     Show()
     # 最后合并视频
-    print(title_list)
     combine_video(title_list)
     print('done ' + start)
     end_time = time.time()  # 结束时间
