@@ -7,9 +7,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
+# delay time: depends on network
 d = 0.9
+# username ans password
+username = '20201081369'
+passwd = 'YYHYYH123'
+# 伯川=0, 令希=1
+lib = 1
+
 driver = webdriver.Chrome()
-wait = WebDriverWait(driver, 10)
 driver.get("http://seat.lib.dlut.edu.cn/yanxiujian/client/index.php")
 
 clicker = driver.find_element_by_partial_link_text('登录系统')
@@ -17,8 +23,8 @@ ActionChains(driver).click(clicker).perform()
 
 login_username = driver.find_element_by_class_name('person')
 login_passwd = driver.find_element_by_class_name('lock')
-login_username.send_keys("20201081369")
-login_passwd.send_keys("YYHYYH123")
+login_username.send_keys(username)
+login_passwd.send_keys(passwd)
 login_passwd.send_keys(Keys.RETURN)
 
 clicker = driver.find_element_by_partial_link_text('座位预约')
@@ -29,7 +35,8 @@ time.sleep(d)
 # clicker = wait.until(
 #     EC.presence_of_element_located((By.CSS_SELECTOR, 'td'))
 # )
-ActionChains(driver).click(clicker[1]).perform()
+clicker = driver.find_elements_by_css_selector('td')
+ActionChains(driver).click(clicker[lib]).perform()
 
 def if_free(rooms):
     for i in rooms:
