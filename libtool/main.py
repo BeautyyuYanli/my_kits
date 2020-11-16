@@ -68,7 +68,6 @@ def get_a_free_room():
         if (room != 0):
             return room
         time.sleep(d)
-        print(rooms)
         driver.refresh()
 
 def get_a_seat():
@@ -92,8 +91,17 @@ def book_a_seat():
     time.sleep(0.5)
     submit = driver.find_element_by_css_selector('#btn_submit_addorder')
     ActionChains(driver).click(submit).perform()
-    time.sleep(0.5)
-    result = driver.find_element_by_css_selector('div.bootbox-body')
+    while 1:
+        try:
+            result = driver.find_element_by_css_selector('div.bootbox-body')
+        except:
+            continue
+        else:
+            # print(result.text)
+            if not result.text:
+                continue
+            else:
+                break
     if (result.text == '预约成功！'):
         code = 1
     else:
