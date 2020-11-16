@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 
 # delay time: depends on network
-d = 0.9
+d = 1.9
 # username ans password
 username = '20201081369'
 passwd = 'YYHYYH123'
@@ -31,12 +31,18 @@ clicker = driver.find_element_by_partial_link_text('座位预约')
 ActionChains(driver).click(clicker).perform()
 
 
-time.sleep(d)
+# time.sleep(d)
 # clicker = wait.until(
 #     EC.presence_of_element_located((By.CSS_SELECTOR, 'td'))
 # )
-clicker = driver.find_elements_by_css_selector('td')
-ActionChains(driver).click(clicker[lib]).perform()
+while 1:
+    try:
+        clicker = driver.find_elements_by_css_selector('td')
+        ActionChains(driver).click(clicker[lib]).perform()
+    except:
+        continue
+    else:
+        break
 
 def if_free(rooms):
     for i in rooms:
@@ -46,16 +52,32 @@ def if_free(rooms):
 
 def get_a_free_room():
     while 1:
-        time.sleep(d)
-        rooms = driver.find_elements_by_css_selector('td')
-        rooms.pop(0)
+        # time.sleep(d)
+        while 1:
+            try:
+                rooms = driver.find_elements_by_css_selector('td')
+                rooms.pop(0)
+            except:
+                continue
+            else:
+                if not rooms:
+                    continue
+                else:
+                    break
         room = if_free(rooms)
         if (room != 0):
             return room
+        time.sleep(d)
+        print(rooms)
         driver.refresh()
 
 def get_a_seat():
-    seats = driver.find_elements_by_css_selector('div.seat-normal')
+    while 1:
+        seats = driver.find_elements_by_css_selector('div.seat-normal')
+        if not seats:
+            continue
+        else:
+            break
     for i in seats:
         if (i.value_of_css_property('background-color') == 'rgba(185, 222, 160, 1)'):
             return i
@@ -64,6 +86,7 @@ def get_a_seat():
 def book_a_seat():
     seat = get_a_seat()
     if (seat == 0):
+        driver.back()
         return 0
     ActionChains(driver).click(seat).perform()
     time.sleep(0.5)
@@ -80,8 +103,9 @@ def book_a_seat():
 
 while 1:
     ActionChains(driver).click(get_a_free_room()).perform()
-    time.sleep(d)
-
+    # time.sleep(d)
     code = book_a_seat()
     if code:
+        print('success!')
         break
+    print('false!')
