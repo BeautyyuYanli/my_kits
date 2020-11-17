@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
+import time, sys
 
 # delay time: depends on network
 d = 0.5
@@ -15,7 +15,10 @@ passwd = 'YYHYYH123'
 # 伯川=0, 令希=1
 lib = 1
 
-driver = webdriver.Chrome()
+if (sys.platform == 'win32'):
+    driver = webdriver.Chrome('chromedriver.exe')
+else:
+    driver = webdriver.Chrome()
 driver.get("http://seat.lib.dlut.edu.cn/yanxiujian/client/index.php")
 
 clicker = driver.find_element_by_partial_link_text('登录系统')
