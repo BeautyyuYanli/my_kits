@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 
 # delay time: depends on network
-d = 1.9
+d = 0.5
 # username ans password
 username = '20201081369'
 passwd = 'YYHYYH123'
