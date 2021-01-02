@@ -18,7 +18,6 @@ feed = feedparser.parse(rss)
 with open('database.pwp', 'r') as f:
     donelist = f.read().split('$')
 donelist.pop()
-print(donelist)
 for i in feed.entries:
     i.link = bv2av(i.link.split('/')[-1])
     if i.link not in donelist:
