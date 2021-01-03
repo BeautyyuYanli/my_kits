@@ -13,7 +13,7 @@ d = 0.5
 username = '20201081369'
 passwd = 'YYHYYH123'
 # 伯川=0, 令希=1
-lib = 0
+lib = int(sys.argv[1])
 
 if (sys.platform == 'win32'):
     driver = webdriver.Chrome('chromedriver.exe')
@@ -54,7 +54,9 @@ def if_free(rooms):
     return 0
 
 def get_a_free_room():
+    cnt = 0
     while 1:
+        cnt += 1
         # time.sleep(d)
         while 1:
             try:
@@ -72,6 +74,8 @@ def get_a_free_room():
             return room
         time.sleep(d)
         driver.refresh()
+        if (cnt % 20) == 0:
+            print("retry" + str(cnt))
 
 def get_a_seat():
     while 1:
