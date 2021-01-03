@@ -12,6 +12,7 @@ def bv2av(bvid):
         return "视频不存在"
     return 'https://www.bilibili.com/video/av' + lst[16][1:-1]
 proxies = { 'http': 'http://127.0.0.1:1081', 'https': 'http://127.0.0.1:1081'}
+# proxies = {}
 rss = requests.get('https://rsshub.app/bilibili/fav/10725385/53706285', proxies=proxies).text
 feed = feedparser.parse(rss)
 # feed = feedparser.parse('file:///home/beautyyu/Downloads/1.xml')
