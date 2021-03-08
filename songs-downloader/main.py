@@ -1,23 +1,24 @@
-import feedparser, requests, ffmpeg, time, re, codecs
+import feedparser
+import requests
 import downloader
-# config
-proxies = { 'http': 'http://127.0.0.1:1081', 'https': 'http://127.0.0.1:1081'}
-rssurl = 'https://rsshub.app/bilibili/fav/10725385/53706285'
-# bv2av
+import ffmpeg
+import time
+import re
+import codecs
 def bv2av(bvid):
     site = "https://api.bilibili.com/x/web-interface/view?bvid=" + bvid
     lst = codecs.decode(requests.get(site).content, "utf-8").split("\"")
     if int(lst[2][1:-1]) != 0:
         return "视频不存在"
     return 'https://www.bilibili.com/video/av' + lst[16][1:-1]
-# prepare rss
-rss = requests.get(rssurl, proxies=proxies).text
+proxies = { 'http': 'http://127.0.0.1:1081', 'https': 'http://127.0.0.1:1081'}
+# proxies = {}
+rss = requests.get('https://rsshub.app/bilibili/fav/10725385/53706285', proxies=proxies).text
 feed = feedparser.parse(rss)
-# prepare database
+# feed = feedparser.parse('file:///home/beautyyu/Downloads/1.xml')
 with open('database.pwp', 'r') as f:
     donelist = f.read().split('$')
 donelist.pop()
-# check update
 for i in feed.entries:
     i.link = bv2av(i.link.split('/')[-1])
     if i.link not in donelist:
