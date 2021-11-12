@@ -53,6 +53,7 @@ if __name__ == '__main__':
                 try:
                     rooms = get_by_css(driver, 'tbody>tr', 1)
                     rooms.pop(0)
+                    rooms.pop(-1)
                 except:
                     continue
                 else:
@@ -80,7 +81,7 @@ if __name__ == '__main__':
             code = 0
 
         if code == 1:
-            post_data = {'addCode': res_json['data']['addCode']}
+            post_data = {'addCode': res_json['data']['addCode'], 'method': 'addSeat'}
             res = driver.request('POST', 'http://seat.lib.dlut.edu.cn/yanxiujian/client/orderRoomAction.php?action=addSeatOrder', data = post_data)
             res_json = json.loads(codecs.decode(res.text.encode(), 'utf-8-sig')) 
             if res.status_code and res_json['success']:

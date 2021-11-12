@@ -1,2 +1,4 @@
 debug.log
 geckodriver.log
+env.conf
+py_ver/__pycache__/
