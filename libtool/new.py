@@ -69,3 +69,38 @@ if mode == '1' or mode == '2':
         else:
             print('success!')
             break
+
+def book_advanced_seat():
+    order_date = datetime.date.today().strftime('%Y/%m/%d')
+    delt = math.floor((datetime.datetime.now() + datetime.timedelta(days=1)).timestamp() * 1000)
+    r = s.get('http://seat.lib.dlut.edu.cn/yanxiujian/client/orderRoomAction.php?action=querySeatMap&order_date={}&room_id=199&_={}'.format(order_date, delt))
+    l = r_json(r)
+    advanced_seats = list(range(133,141)) + list(range(157,165)) + list(range(281, 289)) + \
+        list(range(256,264)) + list(range(248,256)) + list(range(224, 232)) + \
+        list(range(216,224))
+    for i in l:
+        for j in i:
+            if int(j['seat_label']) in advanced_seats and j['seat_type'] == '1':
+                postdate = 'seat_id={}&order_date={}'.format(j['seat_id'], order_date)
+                r = s.post('http://seat.lib.dlut.edu.cn/yanxiujian/client/orderRoomAction.php?action=seatChoose', postdate)
+                ll = r_json(r)
+                if ll['success']:
+                    post_data = {'addCode': ll['data']['addCode'], 'method': 'addSeat'}
+                    r = s.post('http://seat.lib.dlut.edu.cn/yanxiujian/client/orderRoomAction.php?action=addSeatOrder', post_data)
+                    lll = r_json(r)
+                    if lll['success']:
+                        return 1
+                    else:
+                        print(lll)
+                else:
+                    print(ll)
+                print(j['seat_label'], 'false')
+                time.sleep(0.5)
+    return 0
+
+if mode == '3':
+    for k in range(60):
+        if book_advanced_seat():
+            break
+        print('no avalible')
+        time.sleep(1)
