@@ -14,7 +14,7 @@ usage:
 python new.py [library] [mode] [studentid] [password]
 ```
     library: 1 --- 伯川 | 2 --- 令希
-    mode: 1 --- get a random seat when the library is full
+    mode: 1 --- get a random seat when the library is full | 2 --- change to a random seat
     studentid: your student id
     password: your password
 

@@ -42,7 +42,7 @@ def get_a_free_room():
             print('tried {} times'.format(cnt))
     return 0
 
-def book_random_seat(room_id):
+def book_random_seat(room_id, mode):
     # r = s.post('http://seat.lib.dlut.edu.cn/yanxiujian/client/orderRoomAction.php?action=randomRoomSeatChoose', 
     # "room_id={}&order_date={}".format(room_id, order_date))
     r = s.post('http://seat.lib.dlut.edu.cn/yanxiujian/client/orderRoomAction.php?action=randomRoomSeatChoose', data = {'room_id': room_id, 'order_date': order_date})
@@ -50,6 +50,8 @@ def book_random_seat(room_id):
     print(l)
     if l['success']:
         post_data = {'addCode': l['data']['addCode'], 'method': 'addSeat'}
+        if mode == '2':
+            post_data['method'] = 'changeSeat'
         r = s.post('http://seat.lib.dlut.edu.cn/yanxiujian/client/orderRoomAction.php?action=addSeatOrder', post_data)
         l = r_json(r)
         if l['success']:
@@ -58,10 +60,10 @@ def book_random_seat(room_id):
     else:
         return 0
 
-if mode == '1':
+if mode == '1' or mode == '2':
     while 1:
         free_room = get_a_free_room()
-        code = book_random_seat(free_room)
+        code = book_random_seat(free_room, mode)
         if code == 0:
             print('false!')
         else:
