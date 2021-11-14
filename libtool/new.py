@@ -99,7 +99,7 @@ def book_advanced_seat():
     return 0
 
 if mode == '3':
-    for k in range(60):
+    for k in range(120):
         if book_advanced_seat():
             break
         print('no avalible')
