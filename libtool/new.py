@@ -70,8 +70,8 @@ if mode == '1' or mode == '2':
             break
 
 def book_advanced_seat():
-    order_date = datetime.date.today().strftime('%Y/%m/%d')
-    delt = math.floor((datetime.datetime.now() + datetime.timedelta(days=1)).timestamp() * 1000)
+    order_date = (datetime.date.today() + datetime.timedelta(days=1)).strftime('%Y/%m/%d')
+    delt = math.floor(datetime.datetime.now().timestamp() * 1000)
     r = s.get('http://seat.lib.dlut.edu.cn/yanxiujian/client/orderRoomAction.php?action=querySeatMap&order_date={}&room_id=199'.format(order_date))
     l = r_json(r)
     advanced_seats = list(range(133,141)) + list(range(157,165)) + list(range(281, 289)) + \
