@@ -55,8 +55,10 @@ def book_random_seat(room_id, mode):
         l = r_json(r)
         if l['success']:
             return 1
+        print(l)
         return 0
     else:
+        print(l)
         return 0
 
 if mode == '1' or mode == '2':
