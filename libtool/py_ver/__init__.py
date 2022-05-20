@@ -16,6 +16,7 @@ def constructPara(id, passwd, lt):
         'ul': str(len(id)),
         'pl': str(len(passwd)),
         'lt': lt,
+        'sl': '0',
         'execution': 'e1s1',
         '_eventId': 'submit',
     }
@@ -29,4 +30,5 @@ def login(id, passwd):
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
     }
     res = s.post(targetUrl, constructPara(id, passwd, lt), headers={'Content-Type': 'application/x-www-form-urlencoded'})
+    print(res.content)
     return s
